@@ -29,6 +29,8 @@ class GildedRose
         increase_quality(item) if item.sell_in < 6
       when "Aged Brie"
         increase_quality(item)
+      when "Conjured Mana Cake"
+        reduce_quality(item, ammount: 2)
       else
         # Normal item quality decrease
         reduce_quality(item)
@@ -45,6 +47,8 @@ class GildedRose
         when "Backstage passes to a TAFKAL80ETC concert"
           # Quality is set to 0
           reduce_quality(item, ammount: item.quality)
+        when "Conjured Mana Cake"
+          reduce_quality(item, ammount: 2)
         else
           # Remaining normal items reduce_quality again making it twice
           reduce_quality(item)

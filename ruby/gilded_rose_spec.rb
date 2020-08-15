@@ -37,6 +37,14 @@ describe GildedRose do
         end
       end
 
+      describe "Conjured items" do
+        subject { Item.new("Conjured Mana Cake", 5, 4) }
+        it "degrade quality twice as fast" do
+          expect(subject.sell_in).to eq 4
+          expect(subject.quality).to eq 2
+        end
+      end
+
       describe "Backstage passes" do
         describe "with concert date in 11 or more days" do
           subject { Item.new("Backstage passes to a TAFKAL80ETC concert", 11, 20) }
@@ -87,6 +95,14 @@ describe GildedRose do
         it "increase in quality twice as normal" do
           expect(subject.sell_in).to eq -3
           expect(subject.quality).to eq 22
+        end
+      end
+
+      describe "Conjured items" do
+        subject { Item.new("Conjured Mana Cake", -1, 5) }
+        it "degrade in quality 4 times as fast" do
+          expect(subject.sell_in).to eq -2
+          expect(subject.quality).to eq 1
         end
       end
     end
