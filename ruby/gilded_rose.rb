@@ -21,33 +21,24 @@ class GildedRose
 
   def update_quality
     @items.each do |item|
-      
+
+      reduce_sell_in(item)
+
       case item.name
       when "Backstage passes to a TAFKAL80ETC concert"
         increase_quality(item)
         increase_quality(item) if item.sell_in < 11
         increase_quality(item) if item.sell_in < 6
+        reduce_quality(item, ammount: item.quality) if item.sell_in < 0
       when "Aged Brie"
         increase_quality(item)
+        increase_quality(item) if item.sell_in < 0
       when "Conjured Mana Cake"
         reduce_quality(item, ammount: 2)
+        reduce_quality(item, ammount: 2) if item.sell_in < 0
       else
         reduce_quality(item)
-      end
-      
-      reduce_sell_in(item)
-
-      if item.sell_in < 0
-        case item.name
-        when "Aged Brie"
-          increase_quality(item)
-        when "Backstage passes to a TAFKAL80ETC concert"
-          reduce_quality(item, ammount: item.quality)
-        when "Conjured Mana Cake"
-          reduce_quality(item, ammount: 2)
-        else
-          reduce_quality(item)
-        end
+        reduce_quality(item) if item.sell_in < 0
       end
 
     end

@@ -47,18 +47,18 @@ describe GildedRose do
 
       describe "Backstage passes" do
         describe "with concert date in 11 or more days" do
-          subject { Item.new("Backstage passes to a TAFKAL80ETC concert", 11, 20) }
+          subject { Item.new("Backstage passes to a TAFKAL80ETC concert", 12, 20) }
           it "increases in quality" do
             expect(subject.quality).to eq 21
-            expect(subject.sell_in).to eq 10
+            expect(subject.sell_in).to eq 11
           end
         end
 
         describe "with concert date in less then 11 days" do
-          subject { Item.new("Backstage passes to a TAFKAL80ETC concert", 10, 20) }
+          subject { Item.new("Backstage passes to a TAFKAL80ETC concert", 11, 20) }
           it "increases in quality twice as fast" do
             expect(subject.quality).to eq 22
-            expect(subject.sell_in).to eq 9
+            expect(subject.sell_in).to eq 10
           end
         end
 
