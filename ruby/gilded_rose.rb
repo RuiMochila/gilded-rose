@@ -19,7 +19,7 @@ class GildedRose
     item.sell_in = item.sell_in - 1
   end
 
-  def update_quality()
+  def update_quality
     @items.each do |item|
       
       case item.name
@@ -32,25 +32,20 @@ class GildedRose
       when "Conjured Mana Cake"
         reduce_quality(item, ammount: 2)
       else
-        # Normal item quality decrease
         reduce_quality(item)
       end
       
       reduce_sell_in(item)
 
-      # negative sell_in behaviour
       if item.sell_in < 0
         case item.name
         when "Aged Brie"
-          # Increases value twice as fast
           increase_quality(item)
         when "Backstage passes to a TAFKAL80ETC concert"
-          # Quality is set to 0
           reduce_quality(item, ammount: item.quality)
         when "Conjured Mana Cake"
           reduce_quality(item, ammount: 2)
         else
-          # Remaining normal items reduce_quality again making it twice
           reduce_quality(item)
         end
       end
