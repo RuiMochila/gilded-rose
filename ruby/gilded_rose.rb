@@ -4,51 +4,53 @@ class GildedRose
     @items = items
   end
 
+  def increase_quality(item, ammount: 1)
+    return if item.name == "Sulfuras, Hand of Ragnaros"
+    item.quality = [item.quality + ammount, 50].min 
+  end
+
+  def reduce_quality(item, ammount: 1)
+    return if item.name == "Sulfuras, Hand of Ragnaros"
+    item.quality = [item.quality - ammount, 0].max
+  end
+
+  def reduce_sell_in(item, ammount: 1)
+    return if item.name == "Sulfuras, Hand of Ragnaros"
+    item.sell_in = item.sell_in - 1
+  end
+
   def update_quality()
     @items.each do |item|
-      if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert"
-        if item.quality > 0
-          if item.name != "Sulfuras, Hand of Ragnaros"
-            item.quality = item.quality - 1
-          end
-        end
+      
+      case item.name
+      when "Backstage passes to a TAFKAL80ETC concert"
+        increase_quality(item)
+        increase_quality(item) if item.sell_in < 11
+        increase_quality(item) if item.sell_in < 6
+      when "Aged Brie"
+        increase_quality(item)
       else
-        if item.quality < 50
-          item.quality = item.quality + 1
-          if item.name == "Backstage passes to a TAFKAL80ETC concert"
-            if item.sell_in < 11
-              if item.quality < 50
-                item.quality = item.quality + 1
-              end
-            end
-            if item.sell_in < 6
-              if item.quality < 50
-                item.quality = item.quality + 1
-              end
-            end
-          end
-        end
+        # Normal item quality decrease
+        reduce_quality(item)
       end
-      if item.name != "Sulfuras, Hand of Ragnaros"
-        item.sell_in = item.sell_in - 1
-      end
+      
+      reduce_sell_in(item)
+
+      # negative sell_in behaviour
       if item.sell_in < 0
-        if item.name != "Aged Brie"
-          if item.name != "Backstage passes to a TAFKAL80ETC concert"
-            if item.quality > 0
-              if item.name != "Sulfuras, Hand of Ragnaros"
-                item.quality = item.quality - 1
-              end
-            end
-          else
-            item.quality = item.quality - item.quality
-          end
+        case item.name
+        when "Aged Brie"
+          # Increases value twice as fast
+          increase_quality(item)
+        when "Backstage passes to a TAFKAL80ETC concert"
+          # Quality is set to 0
+          reduce_quality(item, ammount: item.quality)
         else
-          if item.quality < 50
-            item.quality = item.quality + 1
-          end
+          # Remaining normal items reduce_quality again making it twice
+          reduce_quality(item)
         end
       end
+
     end
   end
 end
